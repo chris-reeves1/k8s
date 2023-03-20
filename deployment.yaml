@@ -1,0 +1,23 @@
+apiVersion: apps/v1 # Version of the Kubernetes API to use, apps is a group of resources used for deployments. 
+kind: Deployment # This is a deployment resource
+metadata:
+  name: nginx # Name of the deployment
+  labels:
+    app: nginx # Labels are used to identify related resources and organize them
+spec:
+  replicas: 1 # The desired number of replicas
+  selector:
+    matchLabels:
+      app: nginx # The selector specifies which pods are controlled by this deployment
+  strategy: # This specifies how the deployment strategy is applied when there is a new version of the deployment
+    rollingUpdate:
+      maxSurge: 25% # Maximum number of pods that can be created above the desired number of replicas during the update
+      maxUnavailable: 25% # Maximum number of pods that can be unavailable during the update
+  template:
+    metadata:
+      labels:
+        app: nginx # This label is assigned to each pod created from this template
+    spec:
+      containers:
+      - name: nginx # Name of the container
+        image: nginx:alpine # The Docker image to use for the container
